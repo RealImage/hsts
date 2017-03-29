@@ -74,6 +74,7 @@ func createHeaderValueNew(maxAge time.Duration, sendPreloadDirective bool) strin
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if strings.Contains(r.RequestURI, "/ping") {
 		h.next.ServeHTTP(w, r)
+		return
 	}
 
 	if isHTTPS(r, h.AcceptXForwardedProtoHeader) {
