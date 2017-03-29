@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -71,6 +72,10 @@ func createHeaderValueNew(maxAge time.Duration, sendPreloadDirective bool) strin
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if strings.Contains(r.RequestURI, "/ping") {
+		h.next.ServeHTTP(w, r)
+	}
+
 	if isHTTPS(r, h.AcceptXForwardedProtoHeader) {
 		w.Header().Add("Strict-Transport-Security", createHeaderValue(h.MaxAge, h.SendPreloadDirective))
 
